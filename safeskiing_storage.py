@@ -20,28 +20,49 @@ def parse_topic(message_topic):
 
 
 def handle_station_topic(topic, message_payload):
-    logging.info("TODO: handle_station_topic")
+    '''
+    mosquitto_pub -t /station1/UUIDs -m "<uuid>,battery;<uuid>,battery;<uuid>,battery;<uuid>,battery"
+    '''
+    logging.info("handle_station_topic topic=[%s], message_payload=[%s]", topic, message_payload)
+    pattern = "/station(.*?)/UUIDs"
+    station_id = re.search(pattern, topic).group(1)
+    logging.info("station_id=[%s]", station_id)
     logging.info(message_payload)
+    skiers = message_payload.split(";")
+    for skier in skiers:
+        uuid_battery = skier.split(",")
+        uuid = uuid_battery[0]
+        battery = uuid_battery[1]
+        logging.info("UUID=[%s], battery=[%s]", uuid, battery)
+
 
 
 def handle_nfc_topic(topic, message_payload):
-    logging.info("TODO: handle_nfc_topic")
+    '''
+    mosquitto_pub -t /NFC/uuid-aaa-bbb-ccc -m ff
+    '''
+    logging.info("handle_nfc_topic topic=[%s], message_payload=[%s]", topic, message_payload)
     logging.info(message_payload)
+    uuid = topic.split("/NFC/", 1)[1]
+    battery = int(message_payload, 16)
+    logging.info("UUID=[%s], battery=[%s]", uuid, battery)
 
 
 def handle_totalpeople_topic(topic, message_payload):
+    '''
+    mosquitto_pub -t /station1/totalPeople -m 34
+    '''
+    logging.info("handle_totalpeople_topic topic=[%s], message_payload=[%s]", topic, message_payload)
     pattern = "/station(.*?)/totalPeople"
     station_id = re.search(pattern, topic).group(1)
     logging.info(message_payload + " people on station " + station_id)
-    logging.info("TODO: handle_totalpeople_topic")
+
 
 
 if __name__ == "__main__":
 
     logging.info("Start mqqt subscribe")
-
     client = Client(client_id=cfg["mqtt"]["client_id"])
-
 
     def on_connect(client, userdata, flags, rc):
         if rc == 0:
