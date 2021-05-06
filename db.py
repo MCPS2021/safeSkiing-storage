@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, TIMESTAMP, ForeignKey, create_engine
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship, backref, sessionmaker, joinedload
+from sqlalchemy.orm import relationship, backref, sessionmaker
 from datetime import datetime
 import random
 import string
@@ -35,8 +35,8 @@ class StationsHistory(Base):
     total_people = Column(Integer, nullable=False)
 
     def __repr__(self):
-        return "<StationsHistory(id='%s', station_id='%s', instant='%s', total_people='%s')>" % (
-            self.id, self.station_id, self.instant, self.total_people)
+        return "<StationsHistory(station_id='%s', instant='%s', total_people='%s')>" % (
+            self.station_id, self.instant, self.total_people)
 
 
 class LastUpdate(Base):
@@ -53,7 +53,8 @@ class LastUpdate(Base):
 
     def __repr__(self):
         return "<LastUpdate(uuid='%s', last_battery='%s', last_update='%s', last_position='%s', last_position_change='%s', total_people='%s')>" % (
-            self.uuid, self.last_battery, self.last_update, self.last_position, self.last_position_change, self.total_people)
+            self.uuid, self.last_battery, self.last_update, self.last_position, self.last_position_change,
+            self.total_people)
 
 
 class Skiipass(Base):
@@ -68,32 +69,45 @@ class Skiipass(Base):
     total_people = Column(Integer, nullable=False)
 
     def __repr__(self):
-        return "<Skiipass(name='%s', fullname='%s', password'%s')>" % (
-            self.name, self.fullname, self.password)
+        return "<Skiipass(uuid='%s', departure_time='%s', arrival_time='%s', station_id='%s', total_people='%s')>" % (
+            self.uuid, self.departure_time, self.arrival_time, self.station_id, self.total_people)
 
+
+# Creates a new session to the database by using the engine we described.
+Session = sessionmaker(bind=engine)
+session = Session()
 
 if __name__ == '__main__':
-    # Creates a new session to the database by using the engine we described.
-    Session = sessionmaker(bind=engine)
-    session = Session()
-
-    station = Stations(name='station 1', warning_threshold=1, danger_threshold=1)
+    """
+    ONLY FOR TEST DB LAYER
+    """
+    station = Stations(name='station 1',
+                       warning_threshold=1,
+                       danger_threshold=1)
     session.add(station)
     session.commit()
 
-    stations_history = StationsHistory(station=station, instant=datetime.now(), total_people=1)
+    stations_history = StationsHistory(station=station,
+                                       instant=datetime.now(),
+                                       total_people=1)
     session.add(stations_history)
     session.commit()
 
-    # printing lowercase
     letters = string.ascii_lowercase
     randUUID = ''.join(random.choice(letters) for i in range(10))
-    last_update = LastUpdate(uuid=randUUID, last_battery="FF", last_update=datetime.now(), station=station,
-                             last_position_change=datetime.now(), total_people=1)
+    last_update = LastUpdate(uuid=randUUID,
+                             last_battery="FF",
+                             last_update=datetime.now(),
+                             station=station,
+                             last_position_change=datetime.now(),
+                             total_people=1)
     session.add(last_update)
     session.commit()
 
-    skiipass = Skiipass(uuid='station 1', departure_time=datetime.now(), arrival_time=datetime.now(), station=station,
+    skiipass = Skiipass(uuid='station 1',
+                        departure_time=datetime.now(),
+                        arrival_time=datetime.now(),
+                        station=station,
                         total_people=1)
     session.add(skiipass)
     session.commit()
