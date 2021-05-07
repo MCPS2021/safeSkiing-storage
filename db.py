@@ -42,7 +42,7 @@ class StationsHistory(Base):
 class LastUpdate(Base):
     __tablename__ = 'lastupdate'
     uuid = Column(String(32), primary_key=True, nullable=False)
-    last_battery = Column(String(100), nullable=False)
+    last_battery = Column(Integer, nullable=False)
     last_update = Column(TIMESTAMP, nullable=False)
 
     last_position = Column(Integer, ForeignKey(Stations.id))
