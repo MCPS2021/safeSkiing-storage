@@ -37,7 +37,7 @@ def handle_station_topic(topic, message_payload):
         if last_update_check is None:
             logging.info("last_update not found, create and insert a new one")
             last_update = LastUpdate(uuid=uuid,
-                                     last_battery=battery,
+                                     last_battery=int(battery, 16),
                                      last_update=datetime.now(),
                                      station=station,
                                      last_position_change=datetime.now(),
