@@ -16,7 +16,7 @@ CREATE TABLE stations_history (
 
 CREATE TABLE lastupdate ( 
 	uuid                 varchar(32)  NOT NULL    PRIMARY KEY,
-	last_battery         varchar(100)      ,
+	last_battery         int      ,
 	last_update          timestamp      ,
 	last_position        int      ,
 	last_position_change timestamp      ,
