@@ -37,7 +37,7 @@ def handle_station_topic(topic, message_payload):
         if last_update_check is None:
             logging.info("last_update not found, create and insert a new one")
             last_update = LastUpdate(uuid=uuid,
-                                     last_battery=int(battery, 16),
+                                     last_battery=battery,
                                      last_update=datetime.now(),
                                      station=station,
                                      last_position_change=datetime.now(),
@@ -139,7 +139,7 @@ if __name__ == "__main__":
 
         message_topic = message.topic
         message_payload = message.payload.decode()
-        logging.info("Handle new message topic=[%s], message_payload=[%s]", message_topic, message_topic)
+        logging.info("Handle new message topic=[%s], message_payload=[%s]", message_topic, message_payload)
 
         if message_topic.find("UUIDs") != -1:
             handle_station_topic(message.topic, message_payload)
