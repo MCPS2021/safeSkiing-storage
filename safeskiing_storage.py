@@ -156,7 +156,7 @@ if __name__ == "__main__":
     client.on_message = on_message
 
     logging.info("Try connect...")
-    client.connect("localhost")
+    client.connect(cfg['mqtt']['host'])
     logging.info("...connected")
 
     logging.info("Try to subscribe...")

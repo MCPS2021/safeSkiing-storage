@@ -9,7 +9,7 @@ from config import cfg
 engine = create_engine("mysql+pymysql://" +
                        cfg["db"]["user"] + ":" +
                        cfg["db"]["passwd"] + "@" +
-                       cfg["db"]["host"] + "/" +
+                       cfg["db"]["host"] + ":" + str(cfg["db"]["port"]) + "/" +
                        cfg["db"]["db"] + "?charset=utf8mb4")
 
 Base = declarative_base()
