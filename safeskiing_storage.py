@@ -104,7 +104,7 @@ def handle_nfc_topic(topic, message_payload):
         logging.warning("last_update not found!")
         logging.info("adding last update of now, and then adding ski pass record")
         last_update = LastUpdate(uuid=uuid,
-                                 last_battery=255,
+                                 last_battery=-1,
                                  last_update=datetime.now(),
                                  station=station,
                                  last_position_change=datetime.now(),
