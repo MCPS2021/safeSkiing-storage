@@ -4,7 +4,9 @@ CREATE TABLE stations (
 	id                   int  NOT NULL  AUTO_INCREMENT  PRIMARY KEY,
 	name                 varchar(100)  NOT NULL    ,
 	warning_threshold    int  NOT NULL    ,
-	danger_threshold     int  NOT NULL    
+	danger_threshold     int  NOT NULL    ,
+	lat                  decimal(8,6) DEFAULT 0,
+	lon                  decimal(9,6) DEFAULT 0
  ) engine=InnoDB;
 
 CREATE TABLE stations_history ( 

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, TIMESTAMP, ForeignKey, create_engine
+from sqlalchemy import Column, Integer, String, TIMESTAMP, ForeignKey, create_engine, Numeric
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, backref, sessionmaker
 from datetime import datetime
@@ -21,6 +21,8 @@ class Stations(Base):
     name = Column(String(100), nullable=False)
     warning_threshold = Column(Integer, nullable=False)
     danger_threshold = Column(Integer, nullable=False)
+    lat = Column(Numeric(6,8, asdecimal=False), default=0)
+    lon = Column(Numeric(6,9, asdecimal=False), default=0)
 
     def __repr__(self):
         return "<Stations(id='%s', name='%s', warning_threshold='%s', danger_threshold='%s')>" % (
