@@ -81,7 +81,15 @@ def handle_nfc_topic(topic, message_payload):
     last_update = session.query(LastUpdate).get(uuid)
     logging.info("last_update [%s]", last_update)
     if last_update is not None:
-        logging.info("last_update found, create new skiipass")
+        logging.info("last_update found, checking if the station is the same [{}] vs [{}]".format(station.id, last_update.last_position))
+        if station.id != last_update.last_position:
+            logging.info("last_update position is not in the same station (meaning uuid not detected or no queue), updating last_update...")
+            last_update.last_update = datetime.now()
+            last_update.last_position = station.id
+            last_update.last_position_change = datetime.now()
+            last_update.total_people = 0
+            session.commit()
+
         skiipass = Skiipass(uuid=uuid,
                             departure_time=datetime.now(),
                             arrival_time=last_update.last_position_change,
@@ -94,7 +102,25 @@ def handle_nfc_topic(topic, message_payload):
         logging.info("committed")
     else:
         logging.warning("last_update not found!")
-
+        logging.info("adding last update of now, and then adding ski pass record")
+        last_update = LastUpdate(uuid=uuid,
+                                 last_battery=255,
+                                 last_update=datetime.now(),
+                                 station=station,
+                                 last_position_change=datetime.now(),
+                                 total_people=0)
+        session.add(last_update)
+        logging.info("inserted last_update [%s]", last_update)
+        skiipass = Skiipass(uuid=uuid,
+                            departure_time=datetime.now(),
+                            arrival_time=last_update.last_position_change,
+                            station=station,
+                            total_people=last_update.total_people)
+        logging.info("add skiipass %s", skiipass)
+        session.add(skiipass)
+        logging.info("try to commit...")
+        session.commit()
+        logging.info("committed")
 
 def handle_totalpeople_topic(topic, message_payload):
     """
