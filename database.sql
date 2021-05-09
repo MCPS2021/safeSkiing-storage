@@ -1,4 +1,5 @@
 CREATE SCHEMA safeskiing;
+USE safeskiing;
 
 CREATE TABLE stations ( 
 	id                   int  NOT NULL  AUTO_INCREMENT  PRIMARY KEY,
