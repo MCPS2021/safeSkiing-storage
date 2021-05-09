@@ -25,8 +25,8 @@ class Stations(Base):
     lon = Column(Numeric(6,9, asdecimal=False), default=0)
 
     def __repr__(self):
-        return "<Stations(id='%s', name='%s', warning_threshold='%s', danger_threshold='%s')>" % (
-            self.id, self.name, self.warning_threshold, self.danger_threshold)
+        return "<Stations(id='%s', name='%s', warning_threshold='%s', danger_threshold='%s', lat='%s', lon='%s')>" % (
+            self.id, self.name, self.warning_threshold, self.danger_threshold, self.lat, self.lon)
 
 
 class StationsHistory(Base):
