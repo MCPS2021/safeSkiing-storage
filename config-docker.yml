@@ -1,0 +1,14 @@
+db:
+    host: safeskiing-db
+    port: 3308
+    user: root
+    passwd: root
+    db: safeskiing
+
+mqtt:
+    host: mqtt_broker
+    client_id: Subscriber_safeskiing
+    station-topic: /+/UUIDs
+    nfc-topic: /NFC/+
+    totalpeople-topic: /+/totalPeople
+    qos: 2
