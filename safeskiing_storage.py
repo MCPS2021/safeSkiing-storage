@@ -3,7 +3,7 @@ from paho.mqtt.client import Client
 from config import cfg
 import re
 from db import Stations, Skiipass, StationsHistory, LastUpdate, session
-from datetime import datetime
+from datetime import datetime, timedelta
 
 # define logger
 format = "%(asctime)s: %(message)s"
@@ -86,7 +86,7 @@ def handle_nfc_topic(topic, message_payload):
             logging.info("last_update position is not in the same station (meaning uuid not detected or no queue), updating last_update...")
             last_update.last_update = datetime.now()
             last_update.last_position = station.id
-            last_update.last_position_change = datetime.now()
+            last_update.last_position_change = datetime.now() - timedelta(seconds=1)
             last_update.total_people = 0
             session.commit()
 
